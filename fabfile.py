@@ -1,5 +1,5 @@
-from fabric.api import local, settings, abort
-from fabric.contrib.console import confirm
+from fabric.api import local, settings, abort # type: ignore
+from fabric.contrib.console import confirm # type: ignore
 
 # prepare for deployment
 
@@ -14,7 +14,7 @@ def test():
 
 
 def commit():
-    message = raw_input("Enter a git commit message: ")
+    message = input("Enter a git commit message: ")
     local("git add . && git commit -am '{}'".format(message))
 
 
