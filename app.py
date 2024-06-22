@@ -15,7 +15,7 @@ from logging import Formatter, FileHandler
 from flask_wtf import Form
 from sqlalchemy import desc, func
 from forms import *
-from models import *
+
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -270,7 +270,7 @@ def create_venue_submission():
       db.session.rollback()
       print(sys.exc_info())
       flash(
-        "An error has occured. Venue"+ new_venue.name+" Could not listed in Venue."
+        "An error has occured. Venue Could not listed in Venue."
       )
       error=True
     finally:
@@ -381,6 +381,8 @@ def show_artist(artist_id):
     "city": artist.city,
     "state": artist.state,
     "phone": artist.phone,
+    "website":artist.website,
+    "facebook_link":artist.facebook_link,
     "seeking_venue": artist.seeking_venue,
     "seeking_description": artist.seeking_description,
     "image_link": artist.image_link,
@@ -388,6 +390,7 @@ def show_artist(artist_id):
     "upcoming_shows": upcoming_shows,
     "past_shows_count": len(past_shows),
     "upcoming_shows_count": len(upcoming_shows),
+    
   }
 
   return render_template('pages/show_artist.html', artist=data)
@@ -407,12 +410,12 @@ def edit_artist_submission(artist_id):
   form.populate_obj(artist)
   try:
     db.session.commit()
-    flash("Artist"+artist.name+"is updated successfully !")
+    flash("Artist is updated successfully !")
   except Exception as e:
     db.session.rollback()
     print(sys.exc_info()[1])
     print(e)
-    flash("Artist"+artist.name+"is not updated successfully due "+e)
+    flash("Artist is not updated successfully due "+e)
   finally:
     db.session.close()
   return redirect(url_for('show_artist', artist_id=artist_id))
@@ -442,15 +445,15 @@ def edit_venue_submission(venue_id):
     form.populate_obj(venue)
     try:
       db.session.commit()
-      flash("Venue "+ venue.name+" has updated successfully !")
+      flash("Venue  has updated successfully !")
     except Exception as e:
       db.session.rollback()
       print(sys.exc_info())
-      flash("Venue "+ venue.name+" not updated successfully !")
+      flash("Venue not updated successfully !")
     finally:
       db.session.close()
   else:
-    flash("Venue "+ venue.name+" not updated successfully !")
+    flash("Venue not updated successfully !")
     print(form.errors)
   print('request.form.get("name"): ' + form.name.data)
   return redirect(url_for('show_venue', form=form, venue_id=venue_id))
@@ -488,7 +491,7 @@ def create_artist_submission():
       print(e)
       db.seesion.rollback()
       print(sys.exc_info())
-      flash( "An error occurred. Artist " + new_artist.name + " could not be listed.")
+      flash( "An error occurred. Artist  could not be listed.")
     finally:
       db.session.close()
       return render_template('pages/home.html')
